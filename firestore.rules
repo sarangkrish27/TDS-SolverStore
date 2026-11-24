@@ -1,0 +1,21 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public coursework and solver listings are read directly by the browser.
+    match /assignments/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /solvers/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Authenticated API endpoints handle all writes and private issue access.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
